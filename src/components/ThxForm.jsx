@@ -1,92 +1,74 @@
+import { useRef, useEffect } from "react";
 import styled from "styled-components";
 
-const ThxForm = ({ value, setValue, display, setDisplay}) => {
+const ThxForm = ({ value, setValue, display}) => {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(display === 'THX')
+        inputRef.current.focus()
+    }, 500)
+  }, [display]);
+
   return (
     <Wrapper show={ display === 'THX' }>
-      <Arrow onClick={ () => setDisplay('') }/>
       <Heading3>Dziękuje za...</Heading3>
-      <TextBox 
+      <TextBox
+        ref = { inputRef }
         value={ value } 
         onChange={ e => setValue(e.target.value) } 
-        ref={input => display === 'THX' ? input && input.focus() : ''}
       />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  ${props => props.show ? 'display: block' : 'display: none'};
   position: absolute;
   top: 0;
-  left: 0;
+  left: ${props => props.show ? '0' : '-55%'};
   height: 100%;
   width: 50%;
   background-color: #231F20;
   color: #fff;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   transition: all .4s ease-out;
+  z-index: 2;
+
+  @media (max-width: 768px) { 
+    width: 90%;
+    left: ${props => props.show ? '0' : '-95%'};
+  }
 `;
 
 const Heading3 = styled.h3`
-  margin-top: 2em;
-  margin-left: 2em;
-  font-size: 1.8rem;
+  margin-top: 1.5em;
+  margin-left: 1.5em;
+  font-size: 2em;
+
+  @media (max-width: 768px) { 
+    margin-top: 1em;
+    margin-left: 1em;
+  }
 `;
 
 const TextBox = styled.textarea`
-  margin-left: 3em;
-  padding: 1em;
+  padding: 1em 2.2em;
   border: none;
   outline: none;
   resize: none;
   background-color: #231F20;
   color: #fff;
+  font-family: 'Poppins', sans-serif;
   font-size: 2em;
   line-height: 150%;
   width: calc(100% - 6em);
   height: 70%;
+  width: 100%;
+
+  @media (max-width: 768px) { 
+    padding: .5em 1.5em;
+  }
 `;
-
-const Arrow = styled.div`
-	width: 1.2em;
-	height: 1.2em;
-	box-sizing: border-box;
-	position: absolute;
-	right: 1em;
-	top: 1em;
-  transform: rotate(-135deg);
-  cursor: pointer;
-	
-	:before {
-		content: '';
-		width: 100%;
-		height: 100%;
-		border-width: .3em .3em 0 0;
-		border-style: solid;
-		border-color: #fff;
-		transition: .2s ease;
-		display: block;
-		transform-origin: 100% 0;
-	}
-
-	
-	:after {
-		content: '';
-		float: left;
-		position: relative;
-		top: -100%;
-		width: 100%;
-		height: 100%;
-		border-width: 0 .3em 0 0;
-		border-style: solid;
-		border-color: #fff;
-		transform-origin: 100% 0;
-		transition:.2s ease;
-  }
-  
-  :hover{
-    transform: scale(1.1) rotate(-135deg);
-  }
-`
 
 export default ThxForm;

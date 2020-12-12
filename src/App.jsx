@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import MainForm from './components/MainForm';
@@ -9,26 +9,55 @@ const App = () => {
   const [display, setDisplay] = useState('');
   const [thx, setThx] = useState('');
   const [ask, setAsk] = useState('');
+  const [name, setName] = useState('');
 
-  console.log(display);
+  const wrapperRef = useRef();
+  const thxButtonRef = useRef();
+  const askButtonRef = useRef();
+  const sendButtonRef = useRef();
+
+  const handleClick = (e) => {
+    if(e.target === thxButtonRef.current){
+      setDisplay('THX');
+    }
+    else if(e.target === askButtonRef.current){
+      setDisplay('ASK');
+    }
+    else if(e.target === sendButtonRef.current){
+      sendData();
+    }
+    else{
+      setDisplay('');
+    }
+  }
+
+  const sendData = () => {
+    const data = {
+      name, 
+      thx,
+      ask
+    }
+
+    console.log(data);
+  }
   
   return(
-    <Wrapper display={ display }>
+    <Wrapper ref={ wrapperRef } onClick={ handleClick }>
       <ThxForm value={ thx } setValue={ setThx } display={ display } setDisplay={ setDisplay }/>
       <AskForm value={ ask } setValue={ setAsk } display={ display } setDisplay={ setDisplay }/>
-      <MainBox>
+      <MainBox display={ display }>
         <Container>
           <Heading2>Karta modlitwy</Heading2>
           <BigLogo/>
         </Container>
-        <MainForm display={ display }/>
+        <MainForm value={ name } setValue={ setName }/>
         <Container>
           <ButtonBox>
-            <ButtonBlack onClick={ () => setDisplay('THX') }>Dziękuję za</ButtonBlack>
-            <ButtonWhite onClick={ () => setDisplay('ASK') }>Proszę o</ButtonWhite>
+            <ButtonBlack ref={ thxButtonRef }>Dziękuję za</ButtonBlack>
+            <ButtonWhite ref={ askButtonRef }>Proszę o</ButtonWhite>
           </ButtonBox>
           <SubmitBox>
-            { (thx || ask) && <ButtonSubmit>Wyślij</ButtonSubmit> }
+            { (thx || ask) && <ButtonSubmit ref={ sendButtonRef }>Wyślij</ButtonSubmit> }
           </SubmitBox>
         </Container>
       </MainBox>
@@ -37,18 +66,18 @@ const App = () => {
 }
 
 const Wrapper = styled.div`
+  position: relative;
   width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   font-family: 'Poppins', sans-serif;
   color: #231F20;
-  ${props => props.display === 'THX'
-    ? 'align-items: flex-end;'
-    : props.display === 'ASK'
-    ? 'align-items: flex-start;'
-    : 'align-items: center;'
+  overflow: hidden;
+
+  @media (max-width: 992px) { 
+    font-size: 0.85em;
+  }
+  @media (max-width: 576px) { 
+    font-size: 0.7em;
   }
 `;
 
@@ -62,33 +91,46 @@ const Container = styled.div`
 
 const MainBox = styled.div`
   width: 50%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  ${props => props.display === 'THX' 
+    ? 'margin: 0 0 0 50%;'
+    : props.display === 'ASK'
+    ? 'margin: 0 50% 0 0;'
+    : 'margin: 0 25% 0 25%;'} 
+  transition: all .4s ease-out;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0;
+  }
 `;
 
 const Heading2 = styled.h2`
-  font-size: 2.4rem;
+  font-size: 2.4em;
   text-align: center;
 `;
 
 const BigLogo = styled.img.attrs({
   src: "./logo_black.svg"
 })`
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
   width: 14rem;
   height: auto;
 `;
 
 const ButtonBox = styled.div`
-  margin-top: .5rem;
-  width: 45%;
+  margin-top: 3rem;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const SubmitBox = styled.div`
-  margin-top: .5rem;
-  width: 45%;
+  width: 100%;
   display: flex;
   justify-content: center;
 `;
@@ -98,28 +140,14 @@ const Button = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 1.2rem;
   width: 180px;
   height: 2.8rem;
+  margin: 0 1.5rem 1rem 1.5rem;
   font-weight: 600;
   cursor: pointer;
   border-radius: 2px;
-  
   transition: all .3s ease-out;
 `
-
-const ButtonSubmit = styled(Button)
-`
-  border: 2px solid #231F20;
-  background-color: #fff;
-  transition: all .3s ease-out;
-
-  &:hover{
-    background-color: #231F20;
-    color: #fff;
-  }
-`
-
 const ButtonBlack = styled(Button)`
   background-color: #231F20;
   color: #fff;
@@ -139,5 +167,17 @@ const ButtonWhite = styled(Button)`
     box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23)
   }
 `;
+
+const ButtonSubmit = styled(Button)
+`
+  border: 2px solid #231F20;
+  background-color: #fff;
+  transition: all .3s ease-out;
+
+  &:hover{
+    background-color: #231F20;
+    color: #fff;
+  }
+`
 
 export default App;
