@@ -14,13 +14,15 @@ const App = () => {
   const wrapperRef = useRef();
   const thxButtonRef = useRef();
   const askButtonRef = useRef();
+  const thxFormRef = useRef();
+  const askFormRef = useRef();
   const sendButtonRef = useRef();
 
   const handleClick = (e) => {
-    if(e.target === thxButtonRef.current){
+    if(e.target === thxButtonRef.current || e.target === thxFormRef.current){
       setDisplay('THX');
     }
-    else if(e.target === askButtonRef.current){
+    else if(e.target === askButtonRef.current || e.target === askFormRef.current){
       setDisplay('ASK');
     }
     else if(e.target === sendButtonRef.current){
@@ -43,8 +45,8 @@ const App = () => {
   
   return(
     <Wrapper ref={ wrapperRef } onClick={ handleClick }>
-      <ThxForm value={ thx } setValue={ setThx } display={ display } setDisplay={ setDisplay }/>
-      <AskForm value={ ask } setValue={ setAsk } display={ display } setDisplay={ setDisplay }/>
+      <ThxForm ref={ thxFormRef } value={ thx } setValue={ setThx } display={ display } setDisplay={ setDisplay }/>
+      <AskForm ref={ askFormRef } value={ ask } setValue={ setAsk } display={ display } setDisplay={ setDisplay }/>
       <MainBox display={ display }>
         <Container>
           <Heading2>Karta modlitwy</Heading2>
