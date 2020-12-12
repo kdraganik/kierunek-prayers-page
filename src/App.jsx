@@ -58,7 +58,7 @@ const App = () => {
   }
   
   return(
-    <Wrapper ref={ wrapperRef } onClick={ handleClick }>
+    <Wrapper vh={ window.innerHeight * 0.01 } ref={ wrapperRef } onClick={ handleClick }>
       <ThxForm
         saveButtonRef={ thxSaveButtonRef }
         thxRef={ thxFormRef } 
@@ -97,6 +97,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: calc(${props => props.vh }px * 100);
   font-family: 'Poppins', sans-serif;
   color: #231F20;
   overflow: hidden;
