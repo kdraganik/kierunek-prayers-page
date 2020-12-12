@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-const MainForm = ({ display }) => {
+const MainForm = ({ value, setValue }) => {
   return (
     <Wrapper>
       <InputBox>
         <LabelPerson>Imię</LabelPerson>
-        <InputPerson ref={input => display === '' ? input && input.focus() : ''}/>
+        <InputPerson value={ value } onChange={ e => setValue(e.currentTarget.value) } />
       </InputBox>
     </Wrapper>
   );
@@ -24,6 +24,15 @@ const InputBox = styled.div`
   display: flex;
   flex-direction: column;
 
+  @media (max-width: 1200px) { 
+    width: 50%;
+  }
+  @media (max-width: 992px) { 
+    width: 60%;
+  }
+  @media (max-width: 768px) { 
+    width: 75%;
+  }
 `;
 
 const Label = styled.label`
@@ -51,6 +60,8 @@ const LabelPerson = styled(Label).attrs({
 const InputPerson = styled(Input).attrs({
   id: 'person',
   type: 'text'
-})``;
+})`
+${props => props.value === '' ? 'border-bottom: 1px solid black;' : ''}
+`;
 
 export default MainForm;
