@@ -97,7 +97,6 @@ const Wrapper = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  height: calc(${props => props.vh }px * 100);
   font-family: 'Poppins', sans-serif;
   color: #231F20;
   overflow: hidden;
