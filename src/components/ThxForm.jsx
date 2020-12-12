@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import styled from "styled-components";
 
-const ThxForm = ({ thxRef, value, setValue, display}) => {
+const ThxForm = ({ saveButtonRef, thxRef, value, setValue, display}) => {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -19,6 +19,7 @@ const ThxForm = ({ thxRef, value, setValue, display}) => {
         value={ value } 
         onChange={ e => setValue(e.target.value) } 
       />
+      { value && <SaveButton ref={ saveButtonRef }>Zapisz</SaveButton> }
     </Wrapper>
   );
 }
@@ -70,5 +71,32 @@ const TextBox = styled.textarea`
     padding: .5em 1.5em;
   }
 `;
+
+const SaveButton = styled.div`
+  display: none;
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 120px;
+  height: 2.8rem;
+  margin: 0 1.5rem 1rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #231F20;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.12), 0 2px 3px rgba(0,0,0,0.24);
+
+  &:hover{
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23)
+  }
+
+  @media (max-width: 768px) { 
+    display: flex;
+  }
+`
 
 export default ThxForm;

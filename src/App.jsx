@@ -17,14 +17,16 @@ const App = () => {
   const askButtonRef = useRef();
   const thxFormRef = useRef();
   const askFormRef = useRef();
+  const thxSaveButtonRef = useRef();
+  const askSaveButtonRef = useRef();
   const sendButtonRef = useRef();
 
   const handleClick = (e) => {
     console.log(thxFormRef);
-    if(e.target === thxButtonRef.current || thxFormRef.current.contains(e.target)){
+    if(e.target === thxButtonRef.current || (e.target !== thxSaveButtonRef.current && thxFormRef.current.contains(e.target))){
       setDisplay('THX');
     }
-    else if(e.target === askButtonRef.current || askFormRef.current.contains(e.target)){
+    else if(e.target === askButtonRef.current || (e.target !== askSaveButtonRef.current && askFormRef.current.contains(e.target))){
       setDisplay('ASK');
     }
     else if(e.target === sendButtonRef.current){
@@ -44,6 +46,7 @@ const App = () => {
 
     console.log(data);
 
+    setDisplay('');
     setName('');
     setThx('');
     setAsk('');
@@ -51,13 +54,24 @@ const App = () => {
     setSending(true);
     setTimeout(() => {
       setSending(false);
-    }, 1000);
+    }, 5000);
   }
   
   return(
     <Wrapper ref={ wrapperRef } onClick={ handleClick }>
-      <ThxForm thxRef={ thxFormRef } value={ thx } setValue={ setThx } display={ display } setDisplay={ setDisplay }/>
-      <AskForm askRef={ askFormRef } value={ ask } setValue={ setAsk } display={ display } setDisplay={ setDisplay }/>
+      <ThxForm
+        saveButtonRef={ thxSaveButtonRef }
+        thxRef={ thxFormRef } 
+        value={ thx } setValue={ setThx } 
+        display={ display }
+      />
+      <AskForm
+        saveButtonRef={ askSaveButtonRef }
+        askRef={ askFormRef } 
+        value={ ask } 
+        setValue={ setAsk } 
+        display={ display } 
+      />
       <MainBox display={ display }>
         <Container>
           <Heading2>Karta modlitwy</Heading2>
@@ -70,8 +84,8 @@ const App = () => {
             <ButtonWhite ref={ askButtonRef }>Proszę o</ButtonWhite>
           </ButtonBox>
           <SubmitBox>
-            { (thx || ask) && <ButtonSubmit ref={ sendButtonRef }>Wyślij</ButtonSubmit> }
-            { sending && <Loader/>}
+            { !sending && (thx || ask) && <ButtonSubmit ref={ sendButtonRef }>Wyślij</ButtonSubmit> }
+            { sending && <SendNotice>Twoja karta została wysłana!</SendNotice> }
           </SubmitBox>
         </Container>
       </MainBox>
@@ -194,68 +208,10 @@ const ButtonSubmit = styled(Button)
   }
 `
 
-const Loader = styled.div`
-  display: inline-block;
-  position: relative;
-  width: 4rem;
-  height: 4rem;
-
-  & div {
-    position: absolute;
-    top: 33px;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: #231F20;
-    animation-timing-function: cubic-bezier(0, 1, 1, 0);
-  }
-
-  div:nth-child(1) {
-    left: 8px;
-    animation: lds-ellipsis1 0.6s infinite;
-  }
-
-  div:nth-child(2) {
-    left: 8px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-
-  div:nth-child(3) {
-    left: 32px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-
-  div:nth-child(4) {
-    left: 56px;
-    animation: lds-ellipsis3 0.6s infinite;
-  }
-
-  @keyframes lds-ellipsis1 {
-    0% {
-      transform: scale(0);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  @keyframes lds-ellipsis3 {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(0);
-    }
-  }
-
-  @keyframes lds-ellipsis2 {
-    0% {
-      transform: translate(0, 0);
-    }
-    100% {
-      transform: translate(24px, 0);
-    }
-  }
+const SendNotice = styled.h3`
+  margin-top: .5rem;
+  font-size: 1.2em;
+  text-align: center;
 `;
 
 export default App;
