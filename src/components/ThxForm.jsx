@@ -76,7 +76,7 @@ const SaveButton = styled.div`
   display: none;
   position: absolute;
   right: 1em;
-  bottom: 3em;
+  bottom: 4.2em;
   justify-content: center;
   align-items: center;
   text-align: center;
