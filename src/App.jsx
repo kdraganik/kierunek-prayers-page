@@ -97,6 +97,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: -webkit-fill-available;
   font-family: 'Poppins', sans-serif;
   color: #231F20;
   overflow: hidden;
