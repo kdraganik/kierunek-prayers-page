@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import styled from "styled-components";
 
-const AskForm = ({ value, setValue, display, setDisplay}) => {
+const AskForm = ({ askRef, value, setValue, display, setDisplay}) => {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const AskForm = ({ value, setValue, display, setDisplay}) => {
   }, [display]);
 
   return (
-    <Wrapper show={ display === 'ASK' }>
+    <Wrapper ref={ askRef } show={ display === 'ASK' }>
       <Heading3>Proszę o...</Heading3>
       <TextBox
         ref = { inputRef }

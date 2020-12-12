@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import styled from "styled-components";
 
-const ThxForm = ({ value, setValue, display}) => {
+const ThxForm = ({ thxRef, value, setValue, display}) => {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const ThxForm = ({ value, setValue, display}) => {
   }, [display]);
 
   return (
-    <Wrapper show={ display === 'THX' }>
+    <Wrapper ref={ thxRef } show={ display === 'THX' }>
       <Heading3>Dziękuje za...</Heading3>
       <TextBox
         ref = { inputRef }
