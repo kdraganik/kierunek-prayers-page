@@ -7,6 +7,7 @@ import AskForm from './components/AskForm';
 
 const App = () => {
   const [display, setDisplay] = useState('');
+  const [showLoader, setShowLoader] = useState('');
   const [sending, setSending] = useState(false);
   const [thx, setThx] = useState('');
   const [ask, setAsk] = useState('');
@@ -37,24 +38,34 @@ const App = () => {
     }
   }
 
-  const sendData = () => {
+  const sendData = async () => {
+    setShowLoader(true);
+
     const data = {
       name, 
       thx,
       ask
     }
 
-    console.log(data);
+    try{
+      await addCard(data);
 
-    setDisplay('');
-    setName('');
-    setThx('');
-    setAsk('');
+      setShowLoader(false);
+      setDisplay('');
+      setName('');
+      setThx('');
+      setAsk('');
 
-    setSending(true);
-    setTimeout(() => {
-      setSending(false);
-    }, 5000);
+      setSending(true);
+      setTimeout(() => {
+        setSending(false);
+      }, 5000);
+    }
+    catch(err){
+      setDisplay('ERR');
+      setShowLoader(false);
+      console.log(err);
+    }
   }
   
   return(
@@ -84,13 +95,23 @@ const App = () => {
             <ButtonWhite ref={ askButtonRef }>Proszę o</ButtonWhite>
           </ButtonBox>
           <SubmitBox>
-            { !sending && (thx || ask) && <ButtonSubmit ref={ sendButtonRef }>Wyślij</ButtonSubmit> }
+            { !showLoader && (thx || ask) && <ButtonSubmit ref={ sendButtonRef }>Wyślij</ButtonSubmit> }
             { sending && <SendNotice>Twoja karta została wysłana!</SendNotice> }
+            { showLoader && <Loader><div></div><div></div><div></div><div></div></Loader> }
           </SubmitBox>
+          { display === 'ERR' && (<div style={{textAlign: "center", color: "red"}}>Coś poszło nie tak. Proszę spróbować ponownie.</div>) }
         </Container>
       </MainBox>
     </Wrapper>
   )
+}
+
+const addCard = async (payload) => {
+  const axios = require('axios');
+
+  const { data } = await axios.post('/api/card', payload);
+
+  return data;
 }
 
 const Wrapper = styled.div`
@@ -212,6 +233,70 @@ const SendNotice = styled.h3`
   margin-top: .5rem;
   font-size: 1.2em;
   text-align: center;
+`;
+
+const Loader = styled.div`
+  display: inline-block;
+  position: relative;
+  height: 40px;
+  width: 78px;
+
+  & div {
+    position: absolute;
+    top: 13px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #231F20;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+
+  div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+
+  div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+
+  div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+
+  div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
 `;
 
 export default App;
