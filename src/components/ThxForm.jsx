@@ -13,7 +13,7 @@ const ThxForm = ({ saveButtonRef, thxRef, value, setValue, display}) => {
 
   return (
     <Wrapper ref={ thxRef } show={ display === 'THX' }>
-      <Heading3>Dziękuje za...</Heading3>
+      <Heading3>Dziękuję za...</Heading3>
       <TextBox
         ref = { inputRef }
         value={ value } 

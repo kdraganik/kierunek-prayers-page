@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import MainForm from './components/MainForm';
 import ThxForm from './components/ThxForm';
 import AskForm from './components/AskForm';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const [display, setDisplay] = useState('');
@@ -70,6 +71,7 @@ const App = () => {
   
   return(
     <Wrapper vh={ window.innerHeight * 0.01 } ref={ wrapperRef } onClick={ handleClick }>
+      <Navbar />
       <ThxForm
         saveButtonRef={ thxSaveButtonRef }
         thxRef={ thxFormRef } 
@@ -119,6 +121,7 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   font-family: 'Poppins', sans-serif;
+  background-color: #E8E3E0;
   color: #231F20;
   overflow: hidden;
 

@@ -23,6 +23,7 @@ const InputBox = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  
 
   @media (max-width: 1200px) { 
     width: 50%;
@@ -48,6 +49,7 @@ const Input = styled.input`
   padding: .2rem;
   font-size: 2.4rem;
   outline: none;
+  background-color: #E8E3E0;
   :focus{
     border-bottom: 1px solid black;
   }
