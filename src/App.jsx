@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import MainForm from './components/MainForm';
 import ThxForm from './components/ThxForm';
 import AskForm from './components/AskForm';
-//import Navbar from './components/Navbar';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const [display, setDisplay] = useState('');
@@ -71,7 +71,7 @@ const App = () => {
   
   return(
     <Wrapper vh={ window.innerHeight * 0.01 } ref={ wrapperRef } onClick={ handleClick }>
-      {/* <Navbar /> */}
+      <Navbar />
       <ThxForm
         saveButtonRef={ thxSaveButtonRef }
         thxRef={ thxFormRef } 
